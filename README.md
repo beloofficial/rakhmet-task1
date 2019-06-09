@@ -1,6 +1,6 @@
 # rakhmet-task1
 
-1. git pull 
+1. git clone https://github.com/beloofficial/rakhmet-task1.git 
 
 2. php artisan key:generate
 
