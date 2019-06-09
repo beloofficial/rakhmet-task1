@@ -38,5 +38,6 @@
   UESR can use only GET methods
   
   http://127.0.0.1:8000/api/admin <--- there ADMIN can change user's role
+  
   ----------------------------------------------------------------------------------------
   
