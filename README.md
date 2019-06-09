@@ -19,12 +19,13 @@
 ----------------------------------------------------------------------------------------
 
 <-- https://www.getpostman.com/collections/6bc58072f628a2dc5d49 --> Postman
+
 ----------------------------------------------------------------------------------------
 
-  Admin : admin@gmail.com
+  Admin : admin@gmail.com<br>
   Password: helloworld
 
-  Moderator: moderator:moderator@gmail.com
+  Moderator: moderator:moderator@gmail.com<br>
   Password: helloworld
 
   User: you can create user by auth\Registration request
