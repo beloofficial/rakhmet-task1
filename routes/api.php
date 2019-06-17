@@ -22,19 +22,24 @@ Route::post('/register','RegisterController@register');
 
 
 Route::group(['prefix'=>'categories'],function(){
+	
 	Route::get('/','CategoryController@index');
 	Route::get('/{category}','CategoryController@getGoods');
-	Route::post('/','CategoryController@store')->middleware('auth:api');
-	Route::patch('/{category}','CategoryController@update')->middleware('auth:api');
-	Route::delete('/{category}','CategoryController@destroy')->middleware('auth:api');
+	
+	Route::group(['middleware' => 'auth:api'], function () {
+		Route::post('/','CategoryController@store')->middleware('admin');
+		Route::delete('/{category}','CategoryController@destroy')->middleware('admin');
+		Route::patch('/{category}','CategoryController@update')->middleware('moderator');
+	});
 
 });
 
 Route::group(['prefix'=>'goods'],function(){
-	
-	Route::post('/','GoodController@store')->middleware('auth:api');
-	Route::patch('/{good}','GoodController@update')->middleware('auth:api');
-	Route::delete('/{good}','GoodController@destroy')->middleware('auth:api');
+	Route::group(['middleware' => 'auth:api'], function () {
+		Route::post('/','GoodController@store')->middleware('admin');
+		Route::patch('/{good}','GoodController@update')->middleware('admin');
+		Route::delete('/{good}','GoodController@destroy')->middleware('moderator');
+	});	
 	
 });
 
@@ -42,12 +47,17 @@ Route::group(['prefix'=>'goods'],function(){
 Route::group(['prefix'=>'attributes'],function(){
 	Route::get('/','AttributeController@index');
 	Route::get('/{attribute}','AttributeController@getGoods');
-	Route::post('/','AttributeController@store')->middleware('auth:api');
-	Route::patch('/{attribute}','AttributeController@update')->middleware('auth:api');
-	Route::delete('/{attribute}','AttributeController@destroy')->middleware('auth:api');
+	
+	Route::group(['middleware' => 'auth:api'], function () {	
+		Route::post('/','AttributeController@store')->middleware('admin');
+		Route::patch('/{attribute}','AttributeController@update')->middleware('moderator');
+		Route::delete('/{attribute}','AttributeController@destroy')->middleware('admin');
+	});
 });
 
-Route::put('/admin','AdminController@change')->middleware('auth:api');
+Route::group(['middleware' => 'auth:api'], function () {
+	Route::put('/admin','AdminController@change')->middleware('admin');
+});
 
 
 
