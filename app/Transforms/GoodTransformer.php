@@ -10,6 +10,13 @@ class GoodTransformer extends \League\Fractal\TransformerAbstract
 {
 
 	protected $availableIncludes = ['goodAttribute'];
+
+	/**
+     * Turn this item object into a generic array
+     *
+     * @param Good $good
+     * @return array
+     */
 	public function transform(Good $good){
 
 			return [
@@ -17,7 +24,13 @@ class GoodTransformer extends \League\Fractal\TransformerAbstract
 					'name'=>$good->name,
 			];
 	}	
-
+	
+	/**
+     * Turn this item object into a generic item
+     *
+     * @param Good $good
+     * @return item
+     */
 	public function includeGoodAttribute(Good $good){
 		$attr = request()->route()->parameter('attribute')->id;
 		

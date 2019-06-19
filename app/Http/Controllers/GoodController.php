@@ -16,6 +16,12 @@ use Illuminate\Support\Facades\Gate;
 class GoodController extends Controller
 {
 
+    /**
+     * Store Good
+     *
+     * @param StoreGoodRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function store(StoreGoodRequest $request)
     {   
     
@@ -25,14 +31,30 @@ class GoodController extends Controller
 
         $good->addCategory($request);
         $good->addAttribute($request);
+
+        return response()->json(['message' => 'OK'], 200);
     }
 
+    /**
+     * Update Good
+     *
+     * @param UpdateGoodRequest $request
+     * @param Good $good
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function update(UpdateGoodRequest $request,Good $good)
     {
     	$good->name = $request->name;
     	$good->save();
+        return response()->json(['message' => 'OK'], 200);
     }
 
+    /**
+     * Delete Good
+     *
+     * @param Good $good
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function destroy(Good $good)
     {
     	$good->delete();

@@ -44,4 +44,9 @@ class Good extends Model
         }
         GoodAttribute::insert($data);
     }
+    
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class);
+    }
 }

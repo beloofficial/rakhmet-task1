@@ -9,7 +9,12 @@ use App\Transforms\UserTransformer;
 
 class RegisterController extends Controller
 {
-    
+    /**
+     * Store Category
+     *
+     * @param StoreUserRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function register(StoreUserRequest $request)
     {
     	$user = new User;
@@ -18,5 +23,6 @@ class RegisterController extends Controller
     	$user->password = bcrypt($request->password);
         $user->role = 3;
     	$user->save();
+    	return response()->json(['message' => 'OK'], 200);
     }
 }

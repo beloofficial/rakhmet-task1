@@ -16,13 +16,24 @@ use Exception;
 
 class CategoryController extends Controller
 {
-    
+    /**
+     * Store Category
+     *
+     * @param StoreCategoryRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function store(StoreCategoryRequest $request)
     {
     	$category = new Category;
     	$category->create($request->validated());    
+        return response()->json(['message' => 'OK'], 200);
     }
 
+    /**
+     * Get Categories
+     *
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
     public function index()
     {
     	$categories = Category::get();
@@ -32,18 +43,38 @@ class CategoryController extends Controller
     		->toArray();
     }
 
+    /**
+     * Update Category
+     *
+     * @param UpdateCategoryRequest $request
+     * @param Category $category
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function update(UpdateCategoryRequest $request,Category $category)
     {
         $category->name = $request->name;
         $category->save();
+        return response()->json(['message' => 'OK'], 200);
     }
 
+    /**
+     * Delete Category
+     *
+     * @param Category $category
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function destroy(Category $category)
     {
         $category->delete();
         return response(null,204);
     }
 
+    /**
+     * get Goods by Category
+     *
+     * @param Category $category
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
     public function getGoods(Category $category)
     {
         $data = $category->findGoods()->get('good_id');

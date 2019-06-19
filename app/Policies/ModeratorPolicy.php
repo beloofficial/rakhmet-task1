@@ -9,6 +9,12 @@ class ModeratorPolicy
 {
     use HandlesAuthorization;
 
+    /**
+     * Check user as Moderator
+     *
+     * @param User $user
+     * @return Boolean
+     */
     public function check(User $user)
     {
             return $user->role == 2;

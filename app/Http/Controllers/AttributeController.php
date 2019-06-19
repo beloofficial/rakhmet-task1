@@ -14,7 +14,11 @@ use App\Good;
 
 class AttributeController extends Controller
 {
-    
+    /**
+     * Get All Attributes
+     *
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
     public function index()
     {
     	$attributes = Attribute::get();
@@ -24,6 +28,12 @@ class AttributeController extends Controller
     		->toArray();
     }
 
+    /**
+     * Get Goods by Attribute
+     *
+     * @param Attribute $attribute
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
     public function getGoods(Attribute $attribute)
     {
 
@@ -40,18 +50,39 @@ class AttributeController extends Controller
             ->toArray();
     }
 
+    /**
+     * Store Attribute
+     *
+     * @param StoreAttributeRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function store(StoreAttributeRequest $request)
     {
     	$attribute = new Attribute;
     	$attribute->create($request->validated());
+        return response()->json(['message' => 'OK'], 200);
     }
 
+    /**
+     * Update Attribute
+     *
+     * @param Attribute $attribute
+     * @param StoreAttributeRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function update(Attribute $attribute,Request $request)
     {
         $attribute->name = $request->name;
         $attribute->save();
+        return response()->json(['message' => 'OK'], 200);
     }
 
+    /**
+     * Delete Attribute
+     *
+     * @param Attribute $attribute
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function destroy(Attribute $attribute)
     {
     	$attribute->delete();
