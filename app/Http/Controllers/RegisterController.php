@@ -17,12 +17,7 @@ class RegisterController extends Controller
      */
     public function register(StoreUserRequest $request)
     {
-    	$user = new User;
-    	$user->name = $request->name;
-    	$user->email = $request->email;
-    	$user->password = bcrypt($request->password);
-        $user->role = 3;
-    	$user->save();
-    	return response()->json(['message' => 'OK'], 200);
+    	User::createGuest($request);
+    	return response()->json(['status' => 'success'], 200);
     }
 }

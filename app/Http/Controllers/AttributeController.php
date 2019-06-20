@@ -36,13 +36,7 @@ class AttributeController extends Controller
      */
     public function getGoods(Attribute $attribute)
     {
-
-    	$data = $attribute->findGoods()->get('good_id');
-        $goods = collect(new Good);
-        foreach ($data as $key => $value) {
-
-            $goods->add(Good::find($value->good_id));
-        }  
+        $goods = $attribute->goods;
         return fractal()
             ->collection($goods)
             ->parseIncludes(['goodAttribute'])
@@ -58,9 +52,8 @@ class AttributeController extends Controller
      */
     public function store(StoreAttributeRequest $request)
     {
-    	$attribute = new Attribute;
-    	$attribute->create($request->validated());
-        return response()->json(['message' => 'OK'], 200);
+    	Attribute::create($request->validated());
+        return response()->json(['status' => 'success'], 200);
     }
 
     /**
@@ -72,9 +65,8 @@ class AttributeController extends Controller
      */
     public function update(Attribute $attribute,Request $request)
     {
-        $attribute->name = $request->name;
-        $attribute->save();
-        return response()->json(['message' => 'OK'], 200);
+        $attribute->updateName($request->name);
+        return response()->json(['status' => 'success'], 200);
     }
 
     /**
@@ -86,6 +78,6 @@ class AttributeController extends Controller
     public function destroy(Attribute $attribute)
     {
     	$attribute->delete();
-    	return response(null,204);
+    	return response()->json(['status' => 'success'], 200);
     }
 }

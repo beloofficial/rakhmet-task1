@@ -7,7 +7,7 @@ use App\Http\Requests\StoreGoodRequest;
 use App\Category;
 use App\CategoryGood;
 use App\Attribute;
-use App\GoodAttribute;
+use App\AttributeGood;
 
 class Good extends Model
 {
@@ -16,7 +16,15 @@ class Good extends Model
         'name'
     ];
   	public function findAttributeValue(){
-    	 return $this->hasOne('App\GoodAttribute');
+    	 return $this->hasOne('App\AttributeGood');
+    }
+
+    public function storeAll($request)
+    {
+        $this->name = $request->name;
+        $this->save();
+        $this->addCategory($request);
+        $this->addAttribute($request);
     }
 
     public function addCategory(StoreGoodRequest $request)
@@ -42,11 +50,17 @@ class Good extends Model
                 array_push($data, ['good_id'=>$this->id,'attribute_id'=>$attribute['id'],'value'=>$attribute['value']]);
             }
         }
-        GoodAttribute::insert($data);
+        AttributeGood::insert($data);
     }
     
     public function categories()
     {
         return $this->belongsToMany(Category::class);
+    }
+
+    public function updateName($name)
+    {
+        $this->name = $name;
+        $this->save();
     }
 }

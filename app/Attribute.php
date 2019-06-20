@@ -9,12 +9,13 @@ class Attribute extends Model
 	protected $fillable = [
         'name'
     ];
-    public function findGoods(){
-    	 return $this->hasMany('App\GoodAttribute');
-    }
-
     public function goods()
     {
         return $this->belongsToMany(Good::class);
+    }
+    public function updateName($name)
+    {
+        $this->name = $name;
+        $this->save();
     }
 }

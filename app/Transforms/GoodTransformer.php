@@ -3,13 +3,13 @@
 namespace App\Transforms;
 
 use App\Good;
-use App\GoodAttribute;
+use App\AttributeGood;
 use League\Fractal\ParamBag;
 use Illuminate\Support\Facades\URL;
 class GoodTransformer extends \League\Fractal\TransformerAbstract
 {
 
-	protected $availableIncludes = ['goodAttribute'];
+	protected $availableIncludes = ['attributeGood'];
 
 	/**
      * Turn this item object into a generic array
@@ -31,11 +31,11 @@ class GoodTransformer extends \League\Fractal\TransformerAbstract
      * @param Good $good
      * @return item
      */
-	public function includeGoodAttribute(Good $good){
+	public function includeAttributeGood(Good $good){
 		$attr = request()->route()->parameter('attribute')->id;
 		
 		$g = $good->findAttributeValue()->where('attribute_id',$attr)->first();
-		return $this->item($g, new GoodAttributeTransformer);
+		return $this->item($g, new AttributeGoodTransformer);
 	}
 
 }

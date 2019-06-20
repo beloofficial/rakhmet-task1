@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateGoodAttributesTable extends Migration
+class CreateCategoryGoodTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,19 @@ class CreateGoodAttributesTable extends Migration
      */
     public function up()
     {
-        Schema::create('good_attributes', function (Blueprint $table) {
+        Schema::create('category_good', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('good_id')->unsigned();;
-            $table->bigInteger('attribute_id')->unsigned();
-            $table->string('value');
+            $table->bigInteger('category_id')->unsigned();
+            $table->bigInteger('good_id')->unsigned();
             $table->timestamps();
 
+
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->foreign('good_id')->references('id')->on('goods')->onDelete('cascade');
-            $table->foreign('attribute_id')->references('id')->on('attributes')->onDelete('cascade');
+
         });
+
+
     }
 
     /**
@@ -32,6 +35,6 @@ class CreateGoodAttributesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('good_attributes');
+        Schema::dropIfExists('category_good');
     }
 }

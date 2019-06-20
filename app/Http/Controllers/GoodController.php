@@ -10,7 +10,7 @@ use App\Transforms\GoodTransformer;
 use App\Category;
 use App\CategoryGood;
 use App\Attribute;
-use App\GoodAttribute;
+use App\AttributeGood;
 use Illuminate\Support\Facades\Gate;
 
 class GoodController extends Controller
@@ -26,13 +26,8 @@ class GoodController extends Controller
     {   
     
         $good = new Good;
-        $good->name = $request->name;
-        $good->save();
-
-        $good->addCategory($request);
-        $good->addAttribute($request);
-
-        return response()->json(['message' => 'OK'], 200);
+        $good->storeAll($request);
+        return response()->json(['status' => 'success'], 200);
     }
 
     /**
@@ -42,11 +37,10 @@ class GoodController extends Controller
      * @param Good $good
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(UpdateGoodRequest $request,Good $good)
+    public function update(Good $good,UpdateGoodRequest $request)
     {
-    	$good->name = $request->name;
-    	$good->save();
-        return response()->json(['message' => 'OK'], 200);
+        $good->updateName($request->name);
+        return response()->json(['status' => 'success'], 200);
     }
 
     /**
@@ -58,6 +52,6 @@ class GoodController extends Controller
     public function destroy(Good $good)
     {
     	$good->delete();
-    	return response(null,204);
+    	return response()->json(['status' => 'success'], 200);
     }
 }

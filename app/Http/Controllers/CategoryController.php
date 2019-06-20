@@ -24,9 +24,8 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-    	$category = new Category;
-    	$category->create($request->validated());    
-        return response()->json(['message' => 'OK'], 200);
+    	Category::create($request->validated());    
+        return response()->json(['status' => 'success'], 200);
     }
 
     /**
@@ -52,9 +51,8 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request,Category $category)
     {
-        $category->name = $request->name;
-        $category->save();
-        return response()->json(['message' => 'OK'], 200);
+        $category->updateName($request->name);
+        return response()->json(['status' => 'success'], 200);
     }
 
     /**
@@ -66,7 +64,7 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         $category->delete();
-        return response(null,204);
+        return response()->json(['status' => 'success'], 200);
     }
 
     /**
@@ -75,17 +73,15 @@ class CategoryController extends Controller
      * @param Category $category
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
+
     public function getGoods(Category $category)
     {
-        $data = $category->findGoods()->get('good_id');
-        $goods = collect(new Good);
-        foreach ($data as $key => $value) {
-            $goods->add(Good::find($value->good_id));
-        }  
+        $goods = $category->goods;
         return fractal()
             ->collection($goods)
             ->transformWith(new GoodTransformer)
             ->toArray();
     }
+  
 
 }

@@ -17,9 +17,8 @@ class AdminController extends Controller
      */
     public function change(UpdateUserRequest $request)
 	{
-    	$user = User::find($request->id);
-    	$user->role = $request->role;
-    	$user->save();
-    	return response()->json(['message' => 'OK'], 200);
+    	
+        User::changeRole($request->id,$request->role);
+    	return response()->json(['status' => 'success'], 200);
     }
 }

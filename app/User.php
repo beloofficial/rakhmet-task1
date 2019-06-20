@@ -20,7 +20,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','role'
     ];
 
     /**
@@ -41,7 +41,19 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    static function changeRole($id,$role)
+    {
+        $user = User::find($id);
+        $user->role = $role;
+        $user->save();
+    }
    
+    static function createGuest($request)
+    {
+        $request = $request->validated();
+        $request['password'] = bcrypt($request['password']);
+        User::create($request);
+    }
    
 
 
