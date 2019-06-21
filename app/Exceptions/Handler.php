@@ -4,9 +4,12 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use App\Exceptions\CustomException;
 
 class Handler extends ExceptionHandler
 {
+
+    use CustomException;
     /**
      * A list of the exception types that are not reported.
      *
@@ -45,7 +48,12 @@ class Handler extends ExceptionHandler
      * @return \Illuminate\Http\Response
      */
     public function render($request, Exception $exception)
-    {
+    {   
+        //dd($exception);
+        if($request->expectsJson())
+        {
+            return $this->customExceptions($request,$exception);
+        }
         return parent::render($request, $exception);
     }
 }
