@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StoreUserRequest;
 use App\User;
 use App\Http\Resources\User as UserResource;
+use CheckUser;
 
 class UserController extends Controller
 {

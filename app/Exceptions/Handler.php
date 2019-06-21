@@ -49,7 +49,7 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {   
-        //dd($exception);
+       // dd($exception);
         if($request->expectsJson())
         {
             return $this->customExceptions($request,$exception);

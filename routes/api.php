@@ -27,18 +27,18 @@ Route::group(['prefix'=>'categories'],function(){
 	Route::get('/{category}','CategoryController@getGoods');
 	
 	Route::group(['middleware' => 'auth:api'], function () {
-		Route::post('/','CategoryController@store')->middleware('admin');
-		Route::delete('/{category}','CategoryController@destroy')->middleware('admin');
-		Route::patch('/{category}','CategoryController@update')->middleware('moderator');
+		Route::post('/','CategoryController@store');
+		Route::delete('/{category}','CategoryController@destroy');
+		Route::patch('/{category}','CategoryController@update');
 	});
 
 });
 
 Route::group(['prefix'=>'goods'],function(){
 	Route::group(['middleware' => 'auth:api'], function () {
-		Route::post('/','GoodController@store')->middleware('admin');
-		Route::patch('/{good}','GoodController@update')->middleware('admin');
-		Route::delete('/{good}','GoodController@destroy')->middleware('moderator');
+		Route::post('/','GoodController@store');
+		Route::patch('/{good}','GoodController@update');
+		Route::delete('/{good}','GoodController@destroy');
 	});	
 	
 });
@@ -49,16 +49,18 @@ Route::group(['prefix'=>'attributes'],function(){
 	Route::get('/{attribute}','AttributeController@getGoods');
 	
 	Route::group(['middleware' => 'auth:api'], function () {	
-		Route::post('/','AttributeController@store')->middleware('admin');
-		Route::patch('/{attribute}','AttributeController@update')->middleware('moderator');
-		Route::delete('/{attribute}','AttributeController@destroy')->middleware('admin');
+		Route::post('/','AttributeController@store');
+		Route::patch('/{attribute}','AttributeController@update');
+		Route::delete('/{attribute}','AttributeController@destroy');
 	});
 });
 
 Route::group(['middleware' => 'auth:api'], function () {
-	Route::put('/admin','AdminController@change')->middleware('admin');
+	Route::put('/admin','AdminController@change');
 });
 
 
-
+Route::middleware('auth:api')->get('/check', function () {
+    return CheckUser::isAdmin();
+});
 

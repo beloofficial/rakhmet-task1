@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Gate;
 use App\Good;
 use App\Http\Resources\Attribute as AttributeResource;
 use App\Http\Resources\AttributeCollection;
+use CheckUser;
 
 class AttributeController extends Controller
 {
@@ -71,6 +72,7 @@ class AttributeController extends Controller
      */
     public function store(StoreAttributeRequest $request)
     {
+        CheckUser::isAdmin();
     	$attribute = Attribute::store($request->validated());
 
         return (new AttributeResource($attribute));
@@ -85,6 +87,7 @@ class AttributeController extends Controller
      */
     public function update(Attribute $attribute,Request $request)
     {
+        CheckUser::isModerator();
         $attribute = $attribute->updateName($request->name);
         return (new AttributeResource($attribute));
     }
@@ -97,6 +100,7 @@ class AttributeController extends Controller
      */
     public function destroy(Attribute $attribute)
     {
+        CheckUser::isAdmin();
     	$attribute->delete();
     	return response()->json(['status' => 'success'], 200);
     }

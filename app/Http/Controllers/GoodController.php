@@ -13,6 +13,7 @@ use App\Attribute;
 use App\AttributeGood;
 use App\Http\Resources\Good as GoodResource;
 use App\Http\Resources\GoodCollection;
+use CheckUser;
 
 class GoodController extends Controller
 {
@@ -41,6 +42,7 @@ class GoodController extends Controller
      */
     public function store(StoreGoodRequest $request)
     {   
+        CheckUser::isAdmin();
         $good = $this->good->storeAll($request);
         return new GoodResource($good);
         
@@ -55,7 +57,7 @@ class GoodController extends Controller
      */
     public function update(Good $good,UpdateGoodRequest $request)
     {
-            
+        CheckUser::isModerator();
         $good = $good->updateName($request->name);
         return new GoodResource($good);
         
@@ -69,6 +71,7 @@ class GoodController extends Controller
      */
     public function destroy(Good $good)
     {
+        CheckUser::isAdmin();
     	$good->delete();
     	return response()->json(['status' => 'success'], 200);
     }

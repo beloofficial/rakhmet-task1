@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\UpdateUserRequest;
 use App\User;
 use App\Http\Resources\User as UserResource;
+use CheckUser;
+
 class AdminController extends Controller
 {
 	/**
@@ -16,7 +18,7 @@ class AdminController extends Controller
      */
     public function change(UpdateUserRequest $request)
 	{
-    	
+    	CheckUser::isAdmin();
         $user = User::changeRole($request->id,$request->role);
         return new UserResource($user);
     }

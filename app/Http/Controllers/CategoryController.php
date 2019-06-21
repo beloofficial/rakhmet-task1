@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Gate;
 use Exception;
 use App\Http\Resources\Category as CategoryResource;
 use App\Http\Resources\CategoryCollection;
+use CheckUser;
 
 class CategoryController extends Controller
 {
@@ -42,6 +43,7 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
+        CheckUser::isAdmin();
     	$category = Category::store($request->validated());  
         return new CategoryResource($category);
     }
@@ -66,6 +68,7 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request,Category $category)
     {
+        CheckUser::isModerator();
         return new CategoryResource($category->updateName($request->name));
         
     }
@@ -78,6 +81,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
+        CheckUser::isAdmin();
         $category->delete();
         return response()->json(['status' => 'success'], 200);
     }
