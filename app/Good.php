@@ -15,18 +15,33 @@ class Good extends Model
 	protected $fillable = [
         'name'
     ];
-  	public function findAttributeValue(){
+  	public function findAttributeValue()
+    {
     	 return $this->hasOne('App\AttributeGood');
     }
 
+
+    /**
+     * Store Good
+     *
+     * @param StoreUserRequest $request
+     * @return \Illuminate\Database\Eloquent\Model
+     */
     public function storeAll($request)
     {
         $this->name = $request->name;
         $this->save();
         $this->addCategory($request);
         $this->addAttribute($request);
+        return $this;
     }
 
+    /**
+     * Store categories of this Good
+     *
+     * @param StoreGoodRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function addCategory(StoreGoodRequest $request)
     {
     	$data = [];
@@ -37,8 +52,15 @@ class Good extends Model
             }
         }
         CategoryGood::insert($data);
+        return response()->json(['status' => 'success'], 200);
     }
 
+    /**
+     * Store attributes of this Good
+     *
+     * @param StoreGoodRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function addAttribute(StoreGoodRequest $request)
     {
     	$data = [];
@@ -51,16 +73,29 @@ class Good extends Model
             }
         }
         AttributeGood::insert($data);
+        return response()->json(['status' => 'success'], 200);
     }
     
+    /**
+     * Return Good categories
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function categories()
     {
         return $this->belongsToMany(Category::class);
     }
 
+    /**
+     * Store attributes of this Good
+     *
+     * @param Request->name $name
+     * @return \Illuminate\Database\Eloquent\Model
+     */
     public function updateName($name)
     {
         $this->name = $name;
         $this->save();
+        return $this;
     }
 }

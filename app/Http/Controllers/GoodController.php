@@ -11,11 +11,28 @@ use App\Category;
 use App\CategoryGood;
 use App\Attribute;
 use App\AttributeGood;
-use Illuminate\Support\Facades\Gate;
+use App\Http\Resources\Good as GoodResource;
+use App\Http\Resources\GoodCollection;
 
 class GoodController extends Controller
 {
 
+
+    /**
+     * The good repository instance.
+     */
+    protected $good;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @param  Good $good
+     * @return void
+     */
+    public function __construct(Good $good)
+    {
+        $this->good = $good;
+    }
     /**
      * Store Good
      *
@@ -24,10 +41,9 @@ class GoodController extends Controller
      */
     public function store(StoreGoodRequest $request)
     {   
-    
-        $good = new Good;
-        $good->storeAll($request);
-        return response()->json(['status' => 'success'], 200);
+        $good = $this->good->storeAll($request);
+        return new GoodResource($good);
+        
     }
 
     /**
@@ -39,8 +55,10 @@ class GoodController extends Controller
      */
     public function update(Good $good,UpdateGoodRequest $request)
     {
-        $good->updateName($request->name);
-        return response()->json(['status' => 'success'], 200);
+            
+        $good = $good->updateName($request->name);
+        return new GoodResource($good);
+        
     }
 
     /**

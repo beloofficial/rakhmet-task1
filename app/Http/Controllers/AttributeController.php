@@ -11,9 +11,28 @@ use App\Policies\AdminPolicy;
 use App\Policies\ModeratorPolicy;
 use Illuminate\Support\Facades\Gate;
 use App\Good;
+use App\Http\Resources\Attribute as AttributeResource;
+use App\Http\Resources\AttributeCollection;
 
 class AttributeController extends Controller
 {
+
+    /**
+     * The attribute repository instance.
+     */
+    protected $attribute;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @param  Attribute $attribute
+     * @return void
+     */
+    public function __construct(Attribute $attribute)
+    {
+        $this->attribute = $attribute;
+    }
+
     /**
      * Get All Attributes
      *
@@ -52,8 +71,9 @@ class AttributeController extends Controller
      */
     public function store(StoreAttributeRequest $request)
     {
-    	Attribute::create($request->validated());
-        return response()->json(['status' => 'success'], 200);
+    	$attribute = Attribute::store($request->validated());
+
+        return (new AttributeResource($attribute));
     }
 
     /**
@@ -65,8 +85,8 @@ class AttributeController extends Controller
      */
     public function update(Attribute $attribute,Request $request)
     {
-        $attribute->updateName($request->name);
-        return response()->json(['status' => 'success'], 200);
+        $attribute = $attribute->updateName($request->name);
+        return (new AttributeResource($attribute));
     }
 
     /**

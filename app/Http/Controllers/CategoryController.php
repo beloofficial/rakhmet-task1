@@ -13,9 +13,27 @@ use App\Policies\AdminPolicy;
 use App\Policies\ModeratorPolicy;
 use Illuminate\Support\Facades\Gate;
 use Exception;
+use App\Http\Resources\Category as CategoryResource;
+use App\Http\Resources\CategoryCollection;
 
 class CategoryController extends Controller
 {
+
+    /**
+     * The good repository instance.
+     */
+    protected $category;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @param  Category $category
+     * @return void
+     */
+    public function __construct(Category $category)
+    {
+        $this->category = $category;
+    }
     /**
      * Store Category
      *
@@ -24,8 +42,8 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-    	Category::create($request->validated());    
-        return response()->json(['status' => 'success'], 200);
+    	$category = Category::store($request->validated());  
+        return new CategoryResource($category);
     }
 
     /**
@@ -36,10 +54,7 @@ class CategoryController extends Controller
     public function index()
     {
     	$categories = Category::get();
-        return fractal()
-    		->collection($categories)
-    		->transformWith(new CategoryTransformer)
-    		->toArray();
+        return new CategoryCollection($categories);
     }
 
     /**
@@ -51,8 +66,8 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request,Category $category)
     {
-        $category->updateName($request->name);
-        return response()->json(['status' => 'success'], 200);
+        return new CategoryResource($category->updateName($request->name));
+        
     }
 
     /**

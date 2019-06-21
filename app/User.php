@@ -14,6 +14,10 @@ class User extends Authenticatable
     
 
     use Notifiable,HasApiTokens;
+
+
+    const ADMIN = 1;
+    const MODERATOR = 2;
     /**
      * The attributes that are mass assignable.
      *
@@ -41,18 +45,34 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * Store attributes of this Good
+     *
+     * @param Request->id $id
+     * @param Request->role $role
+     * @return \Illuminate\Http\JsonResponse
+     */
     static function changeRole($id,$role)
     {
         $user = User::find($id);
         $user->role = $role;
         $user->save();
+        
+        return $user;
     }
-   
+    
+    /**
+     * Store attributes of this Good
+     *
+     * @param StoreUserRequest $request
+     * @return User $user
+     */
     static function createGuest($request)
     {
         $request = $request->validated();
         $request['password'] = bcrypt($request['password']);
-        User::create($request);
+        $user = User::create($request);
+        return $user;
     }
    
 

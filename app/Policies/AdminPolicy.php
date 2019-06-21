@@ -1,4 +1,4 @@
-<?php
+d<?php
 
 namespace App\Policies;
 
@@ -17,6 +17,6 @@ class AdminPolicy
      */
    public function check(User $user)
    {
-        return $user->role == 1;
+        return $user->role == User::ADMIN;
    }
 }

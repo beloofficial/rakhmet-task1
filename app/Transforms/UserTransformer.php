@@ -16,12 +16,12 @@ class UserTransformer extends \League\Fractal\TransformerAbstract
 	public function transform(User $user){
 
 			return [
+					'id' =>$user->id,
 					'name'=>$user->name,
 					'email'=>$user->email,
-					'ok'=>"200",
+					'role'=>$user->role,
 
 			];
 	}	
-
 
 }

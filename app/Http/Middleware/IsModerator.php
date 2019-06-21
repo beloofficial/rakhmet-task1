@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Auth;
+use App\User;
 
 class IsModerator
 {
@@ -18,7 +19,7 @@ class IsModerator
     {
         
         if(Auth::user())
-            if (Auth::user()->role == 1 or Auth::user()->role == 2) {
+            if (Auth::user()->role == User::ADMIN or Auth::user()->role == User::MODERATOR) {
 
                 return $next($request);
             }

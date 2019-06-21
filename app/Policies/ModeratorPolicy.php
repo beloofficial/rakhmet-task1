@@ -17,6 +17,6 @@ class ModeratorPolicy
      */
     public function check(User $user)
     {
-            return $user->role == 2;
+            return $user->role == User::MODERATOR;
     }
 }
